@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 
 from pathlib import Path
+import dj_database_url
 
 import os
 
@@ -48,6 +49,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 ]
 
 ROOT_URLCONF = "models.urls"
@@ -98,8 +100,14 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-if 'DATABASE_URL' in os.environ:
-    DATABASES['default'] = dj_database_url.config()
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+STATIC_URL = "/static/"
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "static"),)
+
+if "DATABASE_URL" in os.environ:
+    DATABASES["default"] = dj_database_url.config()
     DEBUG = False
     SESSION_EXPIRE_AT_BROWSER_CLOSE = True
     SECURE_SSL_REDIRECT = False
@@ -126,6 +134,7 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
