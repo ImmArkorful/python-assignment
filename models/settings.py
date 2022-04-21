@@ -98,6 +98,18 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+if 'DATABASE_URL' in os.environ:
+    DATABASES['default'] = dj_database_url.config()
+    DEBUG = False
+    SESSION_EXPIRE_AT_BROWSER_CLOSE = True
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_AGE = 60 * 60
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_BROWSER_XSS_FILTER = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    CSRF_COOKIE_HTTPONLY = False
+
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
